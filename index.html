@@ -12,9 +12,15 @@
 <body>
 
 <div id="container">
-	<div id="webgl">
+
+	<div id="webGLContainer">
+		<h1 id="appStatus"></h1>
+		<div id="webgl">
 	
+		</div>
+		<p>WebGL est requis pour éxécuter cette application</p>
 	</div>
+	
 
 	
 		<form>
@@ -26,17 +32,18 @@
 					<option value="BateauB">Bateau B</option>
 					<option value="BateauC">Bateau C</option>
 				</select><br/>
-				<label for="couleurPlastique">Couleur Bateau :</label>
-				<input type="color" name="couleurPlastique" id="couleurPlastique" />
+				<label for="couleurPrimaire">Couleur Primaire :</label>
+				<input type="color" name="couleurPrimaire" id="couleurPrimaire" /><br/>
+				<label for="couleurSecondaire">Couleur Secondaire :</label>
+				<input type="color" name="couleurSecondaire" id="couleurSecondaire" /><br/>
+				<label for="propulsion">Système de propulsion : </label>
+				<select name="propulsion" id="propulsion"></select>
 			</fieldset>
 
-			
+
 		</form>
 	
-	
 </div>
-
-<p>WebGL est requis</p>
 
 </body>
 	<script type="text/javascript" src="main.js"></script>

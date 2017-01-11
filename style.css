@@ -28,3 +28,11 @@ form
 	height: 600px;
 	display: flex;
 }
+
+#webGLContainer
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
