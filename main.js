@@ -43,6 +43,10 @@ function loadassets()
 	loadModel("BateauC.json", 5);
 	loadModel("Sea.json", 1);
 	loadModel("Rames.json", 0.7);
+	loadModel("BoatProp12.json", 1);
+	loadModel("BoatProp16.json", 1);
+	loadModel("BoatProp16-PRO.json", 1);
+	loadModel("BoatProp32.json", 1);
 }
 
 function init()
@@ -112,7 +116,11 @@ var boatOffsets = {
 }
 
 var offsetPropulsion = {
-	"Rames": { "BateauA": { x:0, y:-0.4, z:0.1}}
+	"Rames": { "BateauA": { x:0, y:-0.4, z:0.1}},
+	"BoatProp12": { "BateauA": { x:0.5, y:-1, z:5.5}},
+	"BoatProp16": { "BateauB": { x:0, y:-2, z:7} },
+	"BoatProp16-PRO": { "BateauB": { x:0, y:-2, z:7}, "BateauC": { x:-2, y:-6, z:-20.6}},
+	"BoatProp32": { "BateauC": { x:-3, y:-4.5, z:-21}}
 }
 
 function animate()
@@ -175,6 +183,7 @@ function loadPropulsionValues(nom)
 
 function loadPropulsionModel(nom)
 {
+	console.log("loading ");
 	if(propulsionActuelle)
 	{
 		boatgroup.remove(propulsionActuelle);
@@ -183,6 +192,10 @@ function loadPropulsionModel(nom)
 	if(nom != "-")
 	{
 		propulsionActuelle = assets[nom + ".json"];
+		if(offsetPropulsion[nom] == null)
+		{
+			console.log("test");
+		}
 		pos = offsetPropulsion[nom][$("#modeleBateau").val()];
 		propulsionActuelle.position.set(pos.x, pos.y, pos.z);
 		boatgroup.add(propulsionActuelle);
@@ -199,6 +212,12 @@ $("#modeleBateau").on("change", function(e) {
 
 	// Change the propulsion values
 	loadPropulsionValues(nom);
+
+	// Removes the old propulsion system
+	if(propulsionActuelle)
+	{
+		boatgroup.remove(propulsionActuelle);
+	}
 
 	// Change the boat offset
 	offsetBoat = boatOffsets[nom];
