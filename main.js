@@ -7,6 +7,7 @@ var controls;
 var manager = new THREE.LoadingManager();
 var boatgroup = new THREE.Group();
 var bateauActuel;
+var propulsionActuelle;
 var offsetBoat;
 
 manager.onStart = function()
@@ -38,8 +39,10 @@ function loadassets()
 	loader = new THREE.JSONLoader(manager);
 
 	loadModel("BateauA.json", 1);
+	loadModel("BateauB.json", 2);
 	loadModel("BateauC.json", 5);
 	loadModel("Sea.json", 1);
+	loadModel("Rames.json", 0.7);
 }
 
 function init()
@@ -64,11 +67,12 @@ function init()
 	// LAUNCH THE CONTROLS
 	controls = new THREE.OrbitControls( camera , renderer.domElement);
 
-	// LOADS THE MODEL
+	// LOADS THE DEFAULT BOAT
 	bateauActuel = assets["BateauA.json"];
 	loadPropulsionValues("BateauA");
-
 	offsetBoat = 0.25;
+
+	// LOADS THE SEA MODEL
 	var mer = assets["Sea.json"];
 	scene.add(mer);
 	mer.position.y = -2;
@@ -96,15 +100,19 @@ function init()
 }
 
 var systemePropulsion = {
-	"BateauA": [ "-", "Rames", "V12" ],
-	"BateauB": [ "-", "V16", "V16-PRO" ],
-	"BateauC": [ "-", "V16-PRO", "V32" ]
+	"BateauA": [ "-", "Rames", "BoatProp12" ],
+	"BateauB": [ "-", "BoatProp16", "BoatProp16-PRO" ],
+	"BateauC": [ "-", "BoatProp16-PRO", "BoatProp32" ]
 }
 
 var boatOffsets = {
 	"BateauA":0.25,
-	"BateauB":1,
+	"BateauB":1.5,
 	"BateauC":5,
+}
+
+var offsetPropulsion = {
+	"Rames": { "BateauA": { x:0, y:-0.4, z:0.1}}
 }
 
 function animate()
@@ -165,6 +173,21 @@ function loadPropulsionValues(nom)
 	}
 }
 
+function loadPropulsionModel(nom)
+{
+	if(propulsionActuelle)
+	{
+		boatgroup.remove(propulsionActuelle);
+	}
+
+	if(nom != "-")
+	{
+		propulsionActuelle = assets[nom + ".json"];
+		pos = offsetPropulsion[nom][$("#modeleBateau").val()];
+		propulsionActuelle.position.set(pos.x, pos.y, pos.z);
+		boatgroup.add(propulsionActuelle);
+	}
+}
 
 $("#modeleBateau").on("change", function(e) {
 
@@ -188,4 +211,8 @@ $("#couleurPrimaire").on("change", function(e) {
 
 $("#couleurSecondaire").on("change", function(e) {
 	changeColorBoat(1,$("#couleurSecondaire").val());
+});
+
+$("#propulsion").on("change", function(e) {
+	loadPropulsionModel($("#propulsion").val());
 });
